@@ -20,13 +20,34 @@ class Grafo {
 
     public:
     void setOrdem(int ordem) {
-        this->ordem = ordem;        
-        this->adjacencia = new list<pair<int, int>>[ordem];
+        this->ordem = ordem+1;
+        this->adjacencia = new list<pair<int, int>>[ordem+1];
     }
 
     void adicionarArestaValorada(int verticeOrigem, int verticeDestino, int valor) {
         this->adjacencia[verticeOrigem].push_back(make_pair(verticeDestino, valor));
         this->adjacencia[verticeDestino].push_back(make_pair(verticeOrigem, valor));
+    }
+
+    // Função criada exclusivamente para o Aurelio =)
+    // A entrada passada no arquivo diz na primeira linha:
+    // 5 6... Ordem = 5..Tamanho=6... No entando o array inicia em zero, portanto... [0,1,2,3,4]
+    // A última linha escreve no vertice 5 que não existe se iniciar em zero...
+    // No entanto ele pode querer usar uma entrada no estilo da entrada da questão 2, ai fizemos pra prever isso
+    bool verticeValido(int vertice) {
+        if (this->adjacencia[vertice].size() == 0) {
+            list<pair<int,int> >::iterator j;
+            for (int i = 0; i < this->ordem; i ++) {
+                for(j = this->adjacencia[i].begin(); j != this->adjacencia[i].end(); j++) {
+                    if (j->first == vertice) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
     void prim(int raiz) {
@@ -36,6 +57,10 @@ class Grafo {
         int peso, infinito = std::numeric_limits<int>::max();
         // Preenche a fila com todos os vertices
         for (int i = 0; i < this->ordem; i ++) {
+            if (!verticeValido(i)) {
+                chave[i] = 0;
+                continue;
+            }
             peso = infinito; // peso sera infinito inicialmente
             if (i == raiz) { // Se for a raiz o peso é zero
                 peso = 0;
@@ -60,7 +85,9 @@ class Grafo {
             // Para cada adjacente do vertice removido:
             list<pair<int,int> >::iterator i;
             for (i = this->adjacencia[u.second].begin(); i != this->adjacencia[u.second].end(); i++) {
-                //auto vAdj = find(fila.begin(), fila.end(), make_pair(infinito, i->first));
+                if (!verticeValido(i->first)) {
+                    continue;
+                }
 
                 auto vAdj = find_if(fila.begin(), fila.end(), [i](const pair<int,int>& a) {
                     return a.second == i->first;
@@ -124,6 +151,11 @@ void importarArquivoLista(string arquivo) {
 
 int main() {
 
-    importarArquivoLista("c:/temp/entrada.in");
+    #ifdef _WIN32
+        importarArquivoLista("c:/temp/entrada.in");
+    #else
+        importarArquivoLista("c:\\temp\\entrada.in");
+    #endif
+
     return 0;
 }

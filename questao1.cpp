@@ -114,7 +114,11 @@ void importarArquivoLista(string arquivo) {
 
 int main() {
 
-    importarArquivoLista("c:/temp/entrada.in");
+    #ifdef _WIN32
+        importarArquivoLista("c:/temp/entrada.in");
+    #else
+        importarArquivoLista("c:\\temp\\entrada.in");
+    #endif
 
     return 0;
 }
