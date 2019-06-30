@@ -22,7 +22,7 @@ class Grafo {
 
     public:
     void setOrdem(int ordem) {
-        this->ordem = ordem;        
+        this->ordem = ordem+1;        
     }
 
     void adicionarArestaValorada(int verticeOrigem, int verticeDestino, int valor) {
@@ -74,69 +74,47 @@ class Grafo {
         }
         cout << "Acabou, soma: " << soma << endl;
     }
+
+    void reiniciar() {
+        this->adjacencia.clear();
+        this->ordem = 0;
+    }
 };
 
-/*void importarArquivoLista(string arquivo, Grafo &grafo) {
+void importarArquivoLista(string arquivo) {
     string linha;
-    int nLinha = 0;
+    int nLinha = 0, pos = 0, fim = 0;
     ifstream arquivoEntrada;
+    Grafo grafo;
 
     arquivoEntrada.open(arquivo);
     if (arquivoEntrada.is_open()) {
         while (getline(arquivoEntrada, linha)) {
-            int pos = linha.find(" ");
+            pos = linha.find(" ");
             if (nLinha == 0) {
-                grafo.setOrdem(std::stoul(linha.substr(0, pos))+2);
+                grafo.setOrdem(std::stoul(linha.substr(0, pos)));
+                fim = std::stoul(linha.substr(pos, sizeof(linha)+1));
                 nLinha++; 
                 continue;
             }
+            nLinha++;
             string linha2 = linha.substr(pos+1, sizeof(linha)+1);
             int pos2 = linha2.find(" ");
             grafo.adicionarArestaValorada(std::stoul(linha.substr(0, pos)), std::stoul(linha2.substr(0, pos2)), std::stoul(linha2.substr(pos2+1, sizeof(linha2)+1)));
+            if (nLinha == (fim+1)) {
+                fim = 0;
+                nLinha = 0;
+                grafo.kruskal();
+                grafo.reiniciar();
+            }
         }
         arquivoEntrada.close();
     }
-}*/
+}
 
 int main() {
 
-    Grafo grafo4;
-    grafo4.setOrdem(6);
-    grafo4.adicionarArestaValorada(1, 2, 15);
-    grafo4.adicionarArestaValorada(1, 3, 10);
-    grafo4.adicionarArestaValorada(2, 3, 1);
-    grafo4.adicionarArestaValorada(3, 4, 3);
-    grafo4.adicionarArestaValorada(2, 4, 5);
-    grafo4.adicionarArestaValorada(4, 5, 20);
-    grafo4.kruskal();
-
-    Grafo grafo5;
-    grafo5.setOrdem(5);
-    grafo5.adicionarArestaValorada(1, 2, 1);
-    grafo5.adicionarArestaValorada(1, 3, 10);
-    grafo5.adicionarArestaValorada(1, 4, 1);
-    grafo5.adicionarArestaValorada(2, 3, 1);
-    grafo5.adicionarArestaValorada(2, 4, 10);
-    grafo5.adicionarArestaValorada(3, 4, 1);
-    grafo5.kruskal();
-
-    Grafo grafo6;
-    grafo6.setOrdem(9);
-    grafo6.adicionarArestaValorada(0, 1, 4);
-    grafo6.adicionarArestaValorada(0, 7, 8);
-    grafo6.adicionarArestaValorada(1, 2, 8);
-    grafo6.adicionarArestaValorada(1, 7, 11);
-    grafo6.adicionarArestaValorada(2, 3, 7);
-    grafo6.adicionarArestaValorada(2, 5, 4);
-    grafo6.adicionarArestaValorada(2, 8, 2);
-    grafo6.adicionarArestaValorada(3, 4, 9);
-    grafo6.adicionarArestaValorada(3, 5, 14);
-    grafo6.adicionarArestaValorada(4, 5, 10);
-    grafo6.adicionarArestaValorada(5, 6, 2);
-    grafo6.adicionarArestaValorada(6, 8, 6);
-    grafo6.adicionarArestaValorada(6, 7, 1);
-    grafo6.adicionarArestaValorada(7, 8, 7);
-    grafo6.kruskal();
+    importarArquivoLista("c:/temp/entrada.in");
 
     return 0;
 }
