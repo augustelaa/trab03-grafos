@@ -2,19 +2,36 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build hello world",
+            "label": "build questao1",
             "type": "shell",
             "command": "g++",
             "args": [
                 "-g",
                 "-o",
-                "main",
-                "main.cpp"
+                "questao1",
+                "questao1.cpp"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build questao2",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-o",
+                "questao2",
+                "questao2.cpp"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }

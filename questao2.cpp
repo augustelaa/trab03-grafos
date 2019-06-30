@@ -58,7 +58,7 @@ class Grafo {
             fila.pop_front(); // remove
 
             // Para cada adjacente do vertice removido:
-            list<pair<int, int> >::iterator i;
+            list<pair<int,int> >::iterator i;
             for (i = this->adjacencia[u.second].begin(); i != this->adjacencia[u.second].end(); i++) {
                 //auto vAdj = find(fila.begin(), fila.end(), make_pair(infinito, i->first));
 
